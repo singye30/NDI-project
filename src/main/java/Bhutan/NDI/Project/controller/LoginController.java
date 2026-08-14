@@ -1,6 +1,6 @@
 package Bhutan.NDI.Project.controller;
 
-import Bhutan.NDI.Project.config.NdiConfig;
+import Bhutan.NDI.Project.dto.ProofAttribute;
 import Bhutan.NDI.Project.dto.ProofRequestPayload;
 import Bhutan.NDI.Project.dto.ProofRequestResponse;
 import Bhutan.NDI.Project.dto.Restriction;
@@ -15,138 +15,196 @@ import java.util.List;
 @Controller
 public class LoginController {
 
-    private final NdiService ndiService;
+        private final NdiService ndiService;
 
-    private final NdiConfig config;
+        public LoginController(NdiService ndiService) {
 
-    public LoginController(
-            NdiService ndiService,
-            NdiConfig config) {
-
-        this.ndiService = ndiService;
-        this.config = config;
-    }
-
-    @GetMapping("/")
-    public String login(Model model) {
-
-        try {
-
-            // ==========================================
-            // Create Proof Request
-            // ==========================================
-
-            ProofRequestPayload payload = new ProofRequestPayload();
-
-            payload.setProofName(
-                    "Verify Foundational ID");
-
-            // ==========================================
-            // ID Number
-            // ==========================================
-
-            ProofRequestPayload.ProofAttribute idAttr = new ProofRequestPayload.ProofAttribute();
-
-            idAttr.setName(
-                    "ID Number");
-
-            Restriction idRestriction = new Restriction(
-                    config.getFoundationSchema());
-
-            idAttr.setRestrictions(
-                    List.of(idRestriction));
-
-            // ==========================================
-            // Full Name
-            // ==========================================
-
-            ProofRequestPayload.ProofAttribute nameAttr = new ProofRequestPayload.ProofAttribute();
-
-            nameAttr.setName(
-                    "Full Name");
-
-            Restriction nameRestriction = new Restriction(
-                    config.getFoundationSchema());
-
-            nameAttr.setRestrictions(
-                    List.of(nameRestriction));
-
-            // ==========================================
-            // Add Attributes
-            // ==========================================
-
-            payload.setProofAttributes(
-                    List.of(
-                            idAttr,
-                            nameAttr));
-
-            payload.setPurpose(
-                    "login");
-
-            // ==========================================
-            // Call NDI
-            // ==========================================
-
-            System.out.println(
-                    "======================================");
-
-            System.out.println(
-                    "Creating NDI Proof Request");
-
-            ProofRequestResponse response = ndiService.createProofRequest(
-                    payload);
-
-            // ==========================================
-            // Get QR URL
-            // ==========================================
-
-            String qrUrl = response
-                    .getData()
-                    .getProofRequestURL();
-
-            // ==========================================
-            // Send QR URL to JSP
-            // ==========================================
-
-            model.addAttribute(
-                    "qrUrl",
-                    qrUrl);
-
-            model.addAttribute(
-                    "threadId",
-                    response
-                            .getData()
-                            .getProofRequestThreadId());
-
-            model.addAttribute(
-                    "deepLink",
-                    response
-                            .getData()
-                            .getDeepLinkURL());
-
-            System.out.println(
-                    "======================================");
-
-            System.out.println(
-                    "QR URL sent to login.jsp:");
-
-            System.out.println(
-                    qrUrl);
-
-            System.out.println(
-                    "======================================");
-
-            return "login";
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            model.addAttribute(
-                    "error",
-                    "Failed to initialize NDI login.");
-
-            return "login";
+                this.ndiService = ndiService;
         }
-    }
+
+        // =========================================================
+        // LOGIN PAGE
+        // =========================================================
+
+        @GetMapping("/")
+        public String login(Model model) {
+
+                try {
+
+                        // =====================================================
+                        // FOUNDATIONAL ID SCHEMA
+                        // =====================================================
+
+                        String schemaName = "https://dev-schema.ngotag.com/schemas/"
+                                        + "c7952a0a-e9b5-4a4b-a714-"
+                                        + "1e5d0a1ae076";
+
+                        // =====================================================
+                        // ID NUMBER
+                        // =====================================================
+
+                        ProofAttribute idNumber = new ProofAttribute(
+                                        "ID Number",
+                                        List.of(
+                                                        new Restriction(
+                                                                        schemaName)));
+
+                        // =====================================================
+                        // FULL NAME
+                        // =====================================================
+
+                        ProofAttribute fullName = new ProofAttribute(
+                                        "Full Name",
+                                        List.of(
+                                                        new Restriction(
+                                                                        schemaName)));
+
+                        // =====================================================
+                        // PROOF REQUEST
+                        // =====================================================
+
+                        ProofRequestPayload payload = new ProofRequestPayload();
+
+                        payload.setProofName(
+                                        "Verify Foundational ID");
+
+                        payload.setProofAttributes(
+                                        List.of(
+                                                        idNumber,
+                                                        fullName));
+
+                        payload.setPurpose(
+                                        "login");
+
+                        // =====================================================
+                        // CREATE PROOF REQUEST
+                        // =====================================================
+
+                        ProofRequestResponse response = ndiService.createProofRequest(
+                                        payload);
+
+                        // =====================================================
+                        // CHECK RESPONSE
+                        // =====================================================
+
+                        if (response == null
+                                        || response.getData() == null) {
+
+                                throw new RuntimeException(
+                                                "Invalid response from NDI");
+                        }
+
+                        // =====================================================
+                        // GET QR URL
+                        // =====================================================
+
+                        String qrUrl = response
+                                        .getData()
+                                        .getProofRequestURL();
+
+                        // =====================================================
+                        // GET DEEP LINK
+                        // =====================================================
+
+                        String deepLinkUrl = response
+                                        .getData()
+                                        .getDeepLinkURL();
+
+                        // =====================================================
+                        // GET THREAD ID
+                        // =====================================================
+
+                        String threadId = response
+                                        .getData()
+                                        .getProofRequestThreadId();
+
+                        if (threadId == null
+                                        || threadId.isBlank()) {
+
+                                throw new RuntimeException(
+                                                "NDI proof request thread ID is empty");
+                        }
+
+                        // =====================================================
+                        // LOG INFORMATION
+                        // =====================================================
+
+                        System.out.println();
+                        System.out.println(
+                                        "========================================");
+
+                        System.out.println(
+                                        "NDI LOGIN PROOF REQUEST CREATED");
+
+                        System.out.println(
+                                        "========================================");
+
+                        System.out.println(
+                                        "QR URL:");
+
+                        System.out.println(qrUrl);
+
+                        System.out.println(
+                                        "Deep Link:");
+
+                        System.out.println(deepLinkUrl);
+
+                        System.out.println(
+                                        "Thread ID:");
+
+                        System.out.println(threadId);
+
+                        System.out.println(
+                                        "========================================");
+
+                        // =====================================================
+                        // SUBSCRIBE THREAD TO WEBHOOK
+                        // =====================================================
+
+                        String subscriptionResponse = ndiService.subscribeWebhook(
+                                        threadId);
+
+                        System.out.println(
+                                        "Webhook subscription completed:");
+
+                        System.out.println(
+                                        subscriptionResponse);
+
+                        // =====================================================
+                        // SEND DATA TO JSP
+                        // =====================================================
+
+                        model.addAttribute(
+                                        "qrUrl",
+                                        qrUrl);
+
+                        model.addAttribute(
+                                        "deepLinkUrl",
+                                        deepLinkUrl);
+
+                        model.addAttribute(
+                                        "threadId",
+                                        threadId);
+
+                } catch (Exception e) {
+
+                        System.err.println();
+                        System.err.println(
+                                        "========================================");
+
+                        System.err.println(
+                                        "NDI LOGIN ERROR");
+
+                        System.err.println(
+                                        "========================================");
+
+                        e.printStackTrace();
+
+                        model.addAttribute(
+                                        "error",
+                                        "Unable to create NDI login request.");
+                }
+
+                return "login";
+        }
 }

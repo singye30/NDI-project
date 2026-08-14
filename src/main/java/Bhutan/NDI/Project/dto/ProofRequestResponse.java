@@ -2,17 +2,17 @@ package Bhutan.NDI.Project.dto;
 
 public class ProofRequestResponse {
 
-    private String statusCode;
+    private int statusCode;
 
     private String message;
 
     private Data data;
 
-    public String getStatusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(String statusCode) {
+    public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
 

@@ -18,11 +18,4 @@ public class Restriction {
     public void setSchema_name(String schema_name) {
         this.schema_name = schema_name;
     }
-
-    @Override
-    public String toString() {
-        return "Restriction{" +
-                "schema_name='" + schema_name + '\'' +
-                '}';
-    }
 }

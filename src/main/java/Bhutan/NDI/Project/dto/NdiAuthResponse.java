@@ -7,12 +7,11 @@ public class NdiAuthResponse {
     @JsonProperty("access_token")
     private String accessToken;
 
-    @JsonProperty("expires_in")
-    private long expiresIn;
-
     @JsonProperty("token_type")
     private String tokenType;
 
+    @JsonProperty("expires_in")
+    private Long expiresIn;
 
     public String getAccessToken() {
         return accessToken;
@@ -22,21 +21,19 @@ public class NdiAuthResponse {
         this.accessToken = accessToken;
     }
 
-
-    public long getExpiresIn() {
-        return expiresIn;
-    }
-
-    public void setExpiresIn(long expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-
     public String getTokenType() {
         return tokenType;
     }
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public Long getExpiresIn() {
+        return expiresIn;
+    }
+
+    public void setExpiresIn(Long expiresIn) {
+        this.expiresIn = expiresIn;
     }
 }

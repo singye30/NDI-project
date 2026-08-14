@@ -34,28 +34,4 @@ public class ProofRequestPayload {
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
-
-    public static class ProofAttribute {
-
-        private String name;
-
-        private List<Restriction> restrictions;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public List<Restriction> getRestrictions() {
-            return restrictions;
-        }
-
-        public void setRestrictions(
-                List<Restriction> restrictions) {
-            this.restrictions = restrictions;
-        }
-    }
 }

@@ -13,8 +13,7 @@ public class ProofAttribute {
 
     public ProofAttribute(
             String name,
-            List<Restriction> restrictions
-    ) {
+            List<Restriction> restrictions) {
         this.name = name;
         this.restrictions = restrictions;
     }
@@ -32,16 +31,7 @@ public class ProofAttribute {
     }
 
     public void setRestrictions(
-            List<Restriction> restrictions
-    ) {
+            List<Restriction> restrictions) {
         this.restrictions = restrictions;
-    }
-
-    @Override
-    public String toString() {
-        return "ProofAttribute{" +
-                "name='" + name + '\'' +
-                ", restrictions=" + restrictions +
-                '}';
     }
 }

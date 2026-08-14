@@ -13,7 +13,6 @@ public class NdiAuthRequest {
     @JsonProperty("grant_type")
     private String grantType = "client_credentials";
 
-
     public String getClientId() {
         return clientId;
     }
@@ -22,7 +21,6 @@ public class NdiAuthRequest {
         this.clientId = clientId;
     }
 
-
     public String getClientSecret() {
         return clientSecret;
     }
@@ -30,7 +28,6 @@ public class NdiAuthRequest {
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
     }
-
 
     public String getGrantType() {
         return grantType;
