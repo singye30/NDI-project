@@ -10,21 +10,11 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /** {*/
-        /*    margin: 0;*/
-        /*    padding: 0;*/
-        /*    box-sizing: border-box;*/
-        /*}*/
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #faf8f5 0%, #f5f3f0 100%);
             margin: 0;
-            /* Warm timber-inspired background */
-            /*display: flex;*/
             justify-content: center;
-            /*align-items: center;*/
-            /*min-height: 100vh;*/
-            /*padding: 20px;*/
         }
         .popup {
             width: 590px;
@@ -108,14 +98,12 @@
             transition: all 0.25s ease;
         }
 
-        /* Centered content */
         .ndi-btn-content {
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Logo styling */
         .ndi-btn-logo {
             height: 22px;
             width: auto;
@@ -192,10 +180,6 @@
             flex-direction: column;
             align-items: center;  /* CENTER EVERYTHING */
         }
-
-        /*.ndi-section {*/
-        /*    margin-bottom: 30px;*/
-        /*}*/
 
         .ndi-section:last-child {
             margin-bottom: 0;
@@ -383,51 +367,6 @@
             flex-direction: column;
             align-items: center;
         }
-
-        .top-header {
-            width: 100%;
-            background: #ffffff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        /* Top blue bar */
-        .top-bar {
-            background: #1e90b8;
-            color: white;
-            padding: 10px 20px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            padding: 10px 30px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .logo {
-            width: 70px;
-        }
-
-        .header-text {
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .portal-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .portal-subtitle {
-            font-size: 14px;
-            color: #1e90b8;
-            line-height: 1.4;
-        }
         .popup { margin-top: 30px; }
     </style>
 </head>
@@ -503,7 +442,7 @@
                             <div class="support-contacts">
 
                                 <div class="contact-item">
-                                    <img src="${pageContext.request.contextPath}/resources/images/Mail.svg">
+                                    <img src="${pageContext.request.contextPath}/images/Mail.svg">
                                     <a href="mailto:ndifeedback@bhutanndi.bt">ndifeedback@bhutanndi.bt</a>
                                 </div>
 
@@ -579,10 +518,8 @@
 
                 const idNumber = revealed["ID Number"]?.[0]?.value;
                 const fullName = revealed["Full Name"]?.[0]?.value;
-                const gewog = revealed["Gewog"]?.[0]?.value;
-                const dzongkhag = revealed["Dzongkhag"]?.[0]?.value;
 
-                console.log("Extracted:", { idNumber, fullName, gewog, dzongkhag });
+                console.log("Extracted:", { idNumber, fullName});
 
                 if (!idNumber) {
                     alert("ID Number missing from NDI response");
