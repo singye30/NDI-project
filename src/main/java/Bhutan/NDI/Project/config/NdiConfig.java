@@ -1,7 +1,10 @@
 package Bhutan.NDI.Project.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class NdiConfig {
@@ -67,5 +70,27 @@ public class NdiConfig {
 
     public String getWebhookUnsubscribeUrl() {
         return webhookUnsubscribeUrl;
+    }
+
+    // =========================================================
+    // CORS CONFIGURATION - FOR EXTERNAL PROJECTS
+    // =========================================================
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/ndi/**")
+                    .allowedOrigins(
+                        "http://localhost:8081",
+                        "http://localhost:3000",
+                        "http://localhost:5173",
+                        "http://localhost:4200")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE")
+                    .allowCredentials(true)
+                    .maxAge(3600);
+            }
+        };
     }
 }

@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NdiVerificationStore {
 
     private final Map<String, VerificationResult> results = new ConcurrentHashMap<>();
+    private final Map<String, String> redirectUrls = new ConcurrentHashMap<>();
 
     public void saveVerifiedUser(
             String threadId,
@@ -40,6 +41,16 @@ public class NdiVerificationStore {
     public VerificationResult getResult(String threadId) {
 
         return results.get(threadId);
+    }
+
+    public void saveRedirectUrl(String threadId, String redirectUrl) {
+
+        redirectUrls.put(threadId, redirectUrl);
+    }
+
+    public String getRedirectUrl(String threadId) {
+
+        return redirectUrls.get(threadId);
     }
 
     public static class VerificationResult {

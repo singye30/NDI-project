@@ -5,10 +5,12 @@ import Bhutan.NDI.Project.dto.ProofRequestPayload;
 import Bhutan.NDI.Project.dto.ProofRequestResponse;
 import Bhutan.NDI.Project.dto.Restriction;
 import Bhutan.NDI.Project.services.NdiService;
+import Bhutan.NDI.Project.services.NdiVerificationStore;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -16,10 +18,12 @@ import java.util.List;
 public class LoginController {
 
         private final NdiService ndiService;
+        private final NdiVerificationStore verificationStore;
 
-        public LoginController(NdiService ndiService) {
+        public LoginController(NdiService ndiService, NdiVerificationStore verificationStore) {
 
                 this.ndiService = ndiService;
+                this.verificationStore = verificationStore;
         }
 
         // =========================================================
@@ -27,7 +31,8 @@ public class LoginController {
         // =========================================================
 
         @GetMapping("/")
-        public String login(Model model) {
+        public String login(Model model, 
+                           @RequestParam(required = false) String redirect) {
 
                 try {
 
@@ -169,6 +174,21 @@ public class LoginController {
 
                         System.out.println(
                                         subscriptionResponse);
+
+                        // =====================================================
+                        // SEND DATA TO JSP
+                        // =====================================================
+
+                        // =====================================================
+                        // STORE REDIRECT URL IF PROVIDED
+                        // =====================================================
+
+                        if (redirect != null && !redirect.isBlank()) {
+
+                                verificationStore.saveRedirectUrl(
+                                                threadId,
+                                                redirect);
+                        }
 
                         // =====================================================
                         // SEND DATA TO JSP
