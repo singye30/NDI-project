@@ -47,8 +47,7 @@ public class ProofRequestResponse {
         }
 
         public void setProofRequestName(
-                String proofRequestName
-        ) {
+                String proofRequestName) {
             this.proofRequestName = proofRequestName;
         }
 
@@ -57,8 +56,7 @@ public class ProofRequestResponse {
         }
 
         public void setProofRequestThreadId(
-                String proofRequestThreadId
-        ) {
+                String proofRequestThreadId) {
             this.proofRequestThreadId = proofRequestThreadId;
         }
 
@@ -67,8 +65,7 @@ public class ProofRequestResponse {
         }
 
         public void setDeepLinkURL(
-                String deepLinkURL
-        ) {
+                String deepLinkURL) {
             this.deepLinkURL = deepLinkURL;
         }
 
@@ -77,8 +74,7 @@ public class ProofRequestResponse {
         }
 
         public void setProofRequestURL(
-                String proofRequestURL
-        ) {
+                String proofRequestURL) {
             this.proofRequestURL = proofRequestURL;
         }
     }

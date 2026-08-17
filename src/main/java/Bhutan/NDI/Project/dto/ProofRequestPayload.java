@@ -23,8 +23,7 @@ public class ProofRequestPayload {
     }
 
     public void setProofAttributes(
-            List<ProofAttribute> proofAttributes
-    ) {
+            List<ProofAttribute> proofAttributes) {
         this.proofAttributes = proofAttributes;
     }
 
