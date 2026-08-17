@@ -2,6 +2,7 @@ package Bhutan.NDI.Project.controller;
 
 import Bhutan.NDI.Project.services.NdiVerificationStore;
 import Bhutan.NDI.Project.services.NdiVerificationStore.VerificationResult;
+import Bhutan.NDI.Project.services.NdiClientService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +14,14 @@ import org.springframework.web.servlet.view.RedirectView;
 public class NdiLoginSuccessController {
 
     private final NdiVerificationStore verificationStore;
+    private final NdiClientService clientService;
 
     public NdiLoginSuccessController(
-            NdiVerificationStore verificationStore) {
+            NdiVerificationStore verificationStore,
+            NdiClientService clientService) {
 
         this.verificationStore = verificationStore;
+        this.clientService = clientService;
     }
 
     @GetMapping("/ndi-success")
@@ -39,21 +43,30 @@ public class NdiLoginSuccessController {
         }
 
         // =====================================================
+        // GET CLIENT ID
+        // =====================================================
+
+        String clientId = verificationStore.getClientId(threadId);
+
+        // =====================================================
         // CHECK IF EXTERNAL REDIRECT IS NEEDED
         // =====================================================
 
-        String redirectUrl = verificationStore.getRedirectUrl(threadId);
+        if (clientId != null && !clientId.isBlank()) {
 
-        if (redirectUrl != null && !redirectUrl.isBlank()) {
+            String redirectUrl = clientService.getClientRedirectUrl(clientId);
 
-            // Redirect external project with user data
-            String callbackUrl = redirectUrl + 
-                    "?threadId=" + threadId +
-                    "&idNumber=" + result.getIdNumber() +
-                    "&fullName=" + result.getFullName() +
-                    "&verified=true";
+            if (redirectUrl != null && !redirectUrl.isBlank()) {
 
-            return new RedirectView(callbackUrl);
+                // Redirect external project with user data
+                String callbackUrl = redirectUrl + 
+                        "?threadId=" + threadId +
+                        "&idNumber=" + result.getIdNumber() +
+                        "&fullName=" + result.getFullName() +
+                        "&verified=true";
+
+                return new RedirectView(callbackUrl);
+            }
         }
 
         // =====================================================

@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NdiVerificationStore {
 
     private final Map<String, VerificationResult> results = new ConcurrentHashMap<>();
-    private final Map<String, String> redirectUrls = new ConcurrentHashMap<>();
+    private final Map<String, String> clientIds = new ConcurrentHashMap<>();
 
     public void saveVerifiedUser(
             String threadId,
@@ -43,14 +43,14 @@ public class NdiVerificationStore {
         return results.get(threadId);
     }
 
-    public void saveRedirectUrl(String threadId, String redirectUrl) {
+    public void saveClientId(String threadId, String clientId) {
 
-        redirectUrls.put(threadId, redirectUrl);
+        clientIds.put(threadId, clientId);
     }
 
-    public String getRedirectUrl(String threadId) {
+    public String getClientId(String threadId) {
 
-        return redirectUrls.get(threadId);
+        return clientIds.get(threadId);
     }
 
     public static class VerificationResult {

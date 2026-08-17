@@ -6,6 +6,7 @@ import Bhutan.NDI.Project.dto.ProofRequestResponse;
 import Bhutan.NDI.Project.dto.Restriction;
 import Bhutan.NDI.Project.services.NdiService;
 import Bhutan.NDI.Project.services.NdiVerificationStore;
+import Bhutan.NDI.Project.services.NdiClientService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +20,15 @@ public class LoginController {
 
         private final NdiService ndiService;
         private final NdiVerificationStore verificationStore;
+        private final NdiClientService clientService;
 
-        public LoginController(NdiService ndiService, NdiVerificationStore verificationStore) {
+        public LoginController(NdiService ndiService, 
+                              NdiVerificationStore verificationStore,
+                              NdiClientService clientService) {
 
                 this.ndiService = ndiService;
                 this.verificationStore = verificationStore;
+                this.clientService = clientService;
         }
 
         // =========================================================
@@ -32,9 +37,25 @@ public class LoginController {
 
         @GetMapping("/")
         public String login(Model model, 
-                           @RequestParam(required = false) String redirect) {
+                           @RequestParam(required = false) String clientId) {
 
                 try {
+
+                        // =====================================================
+                        // VALIDATE CLIENT ID
+                        // =====================================================
+
+                        if (clientId != null && !clientId.isBlank()) {
+
+                                var client = clientService.getActiveClient(clientId);
+
+                                if (client.isEmpty()) {
+
+                                        model.addAttribute("error", 
+                                                "Invalid or inactive client ID");
+                                        return "error";
+                                }
+                        }
 
                         // =====================================================
                         // FOUNDATIONAL ID SCHEMA
@@ -180,14 +201,14 @@ public class LoginController {
                         // =====================================================
 
                         // =====================================================
-                        // STORE REDIRECT URL IF PROVIDED
+                        // STORE CLIENT ID IF PROVIDED
                         // =====================================================
 
-                        if (redirect != null && !redirect.isBlank()) {
+                        if (clientId != null && !clientId.isBlank()) {
 
-                                verificationStore.saveRedirectUrl(
+                                verificationStore.saveClientId(
                                                 threadId,
-                                                redirect);
+                                                clientId);
                         }
 
                         // =====================================================
