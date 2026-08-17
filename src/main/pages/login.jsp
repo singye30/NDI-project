@@ -779,159 +779,159 @@
         </script>
         <script>
 
-    const threadId = "${threadId}";
-
-    console.log(
-        "NDI Thread ID:",
-        threadId
-    );
-
-
-    let checking = true;
-
-
-    async function checkNdiVerification() {
-
-        if (!threadId || !checking) {
-
-            return;
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    "/ndi/status/" + threadId
-                );
-
-
-            if (!response.ok) {
-
-                console.error(
-                    "NDI status request failed"
-                );
-
-                setTimeout(
-                    checkNdiVerification,
-                    2000
-                );
-
-                return;
-            }
-
-
-            const result =
-                await response.json();
-
+            const threadId = "${threadId}";
 
             console.log(
-                "NDI verification status:",
-                result
+                "NDI Thread ID:",
+                threadId
             );
 
 
-            // =================================================
-            // SUCCESS
-            // =================================================
-
-            if (
-                result.completed === true
-                &&
-                result.verified === true
-            ) {
-
-                checking = false;
+            let checking = true;
 
 
-                console.log(
-                    "NDI LOGIN SUCCESS"
-                );
+            async function checkNdiVerification() {
+
+                if (!threadId || !checking) {
+
+                    return;
+                }
 
 
-                console.log(
-                    "ID Number:",
-                    result.idNumber
-                );
+                try {
+
+                    const response =
+                        await fetch(
+                            "/ndi/status/" + threadId
+                        );
 
 
-                console.log(
-                    "Full Name:",
-                    result.fullName
-                );
+                    if (!response.ok) {
+
+                        console.error(
+                            "NDI status request failed"
+                        );
+
+                        setTimeout(
+                            checkNdiVerification,
+                            2000
+                        );
+
+                        return;
+                    }
 
 
-                // =============================================
-                // REDIRECT TO TEST SUCCESS PAGE
-                // =============================================
-
-                window.location.href =
-                    "/ndi-success?threadId="
-                    + encodeURIComponent(threadId);
+                    const result =
+                        await response.json();
 
 
-                return;
+                    console.log(
+                        "NDI verification status:",
+                        result
+                    );
+
+
+                    // =================================================
+                    // SUCCESS
+                    // =================================================
+
+                    if (
+                        result.completed === true
+                        &&
+                        result.verified === true
+                    ) {
+
+                        checking = false;
+
+
+                        console.log(
+                            "NDI LOGIN SUCCESS"
+                        );
+
+
+                        console.log(
+                            "ID Number:",
+                            result.idNumber
+                        );
+
+
+                        console.log(
+                            "Full Name:",
+                            result.fullName
+                        );
+
+
+                        // =============================================
+                        // REDIRECT TO TEST SUCCESS PAGE
+                        // =============================================
+
+                        window.location.href =
+                            "/ndi-success?threadId="
+                            + encodeURIComponent(threadId);
+
+
+                        return;
+                    }
+
+
+                    // =================================================
+                    // REJECTED
+                    // =================================================
+
+                    if (
+                        result.completed === true
+                        &&
+                        result.verified === false
+                    ) {
+
+                        checking = false;
+
+
+                        alert(
+                            "NDI verification was rejected."
+                        );
+
+
+                        return;
+                    }
+
+
+                    // =================================================
+                    // STILL WAITING
+                    // =================================================
+
+                    setTimeout(
+                        checkNdiVerification,
+                        2000
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Error checking NDI status:",
+                        error
+                    );
+
+
+                    setTimeout(
+                        checkNdiVerification,
+                        2000
+                    );
+                }
             }
 
 
-            // =================================================
-            // REJECTED
-            // =================================================
+            // =========================================================
+            // START CHECKING
+            // =========================================================
 
-            if (
-                result.completed === true
-                &&
-                result.verified === false
-            ) {
+            if (threadId) {
 
-                checking = false;
-
-
-                alert(
-                    "NDI verification was rejected."
-                );
-
-
-                return;
+                checkNdiVerification();
             }
 
-
-            // =================================================
-            // STILL WAITING
-            // =================================================
-
-            setTimeout(
-                checkNdiVerification,
-                2000
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Error checking NDI status:",
-                error
-            );
-
-
-            setTimeout(
-                checkNdiVerification,
-                2000
-            );
-        }
-    }
-
-
-    // =========================================================
-    // START CHECKING
-    // =========================================================
-
-    if (threadId) {
-
-        checkNdiVerification();
-    }
-
-</script>
+        </script>
 
 
     </body>
