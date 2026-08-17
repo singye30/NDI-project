@@ -101,6 +101,16 @@ public class LoginController {
                     "================================"
             );
 
+            String threadId =
+                    response
+                            .getData()
+                            .getProofRequestThreadId();
+
+            System.out.println("================================");
+            System.out.println("NDI THREAD ID:");
+            System.out.println(threadId);
+            System.out.println("================================");
+
 
         } catch (Exception e) {
 
